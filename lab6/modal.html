@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дасгал 1 - Modal дотор форм</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container py-5 text-center">
+    <h1 class="mb-4">Modal дотор форм</h1>
+
+    <!-- data-bs-toggle="modal" ба data-bs-target нь товч дарахад "#registerModal" цонхыг нээнэ -->
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal">
+      Бүртгүүлэх
+    </button>
+  </div>
+
+  <!-- Modal цонх -->
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Гарчиг ба хаах (X) товч -->
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="registerModalLabel">Бүртгүүлэх</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Хаах"></button>
+        </div>
+
+        <!-- Форм -->
+        <form>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="name" class="form-label">Нэр</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Овог Нэр" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Имэйл</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Нууц үг</label>
+              <input type="password" class="form-control" id="password" name="password" minlength="8" required>
+              <div class="form-text">Хамгийн багадаа 8 тэмдэгт.</div>
+            </div>
+            <div class="mb-3">
+              <label for="major" class="form-label">Мэргэжил</label>
+              <select class="form-select" id="major" name="major">
+                <option value="it">Мэдээллийн технологи</option>
+                <option value="finance">Санхүү</option>
+                <option value="economics">Эдийн засаг</option>
+                <option value="accounting">Нягтлан бодох бүртгэл</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Нэмэлт мэдээлэл</label>
+              <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="agree" name="agree" required>
+              <label class="form-check-label" for="agree">Үйлчилгээний нөхцөлийг зөвшөөрч байна</label>
+            </div>
+          </div>
+
+          <!-- Доод хэсгийн товчнууд -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Хаах</button>
+            <button type="submit" class="btn btn-primary">Илгээх</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal ажиллахад Bootstrap-ийн JavaScript шаардлагатай -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <title>Лаб 3 - CSS шинж чанарууд</title>
+  <style>
+    /* Бүх жишээнд ашиглах ерөнхий загвар */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    section {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+    }
+    .box {
+      background: #74c0fc;
+      border: 1px solid #333;
+    }
+    .outer {
+      background: #ffd8a8;
+      border: 1px dashed #333;
+    }
+
+    /* ===================== 1. CSS MARGIN =====================
+       margin - элементийн ГАДНА талын зай (хүрээнээс гадна, бусад элементтэй хоорондох зай).
+       margin-top, margin-right, margin-bottom, margin-left - тал бүрийг тусад нь өгнө.
+       Товчилсон бичиглэл: margin: дээд баруун доод зүүн; (цагийн зүүний дагуу)
+       margin: auto - өргөнтэй блок элементийг хэвтээ чиглэлд голлуулна. */
+    .m-all {
+      margin: 30px;                  /* 4 талд 30px */
+    }
+    .m-sides {
+      margin-top: 10px;              /* зөвхөн дээд тал */
+      margin-left: 80px;             /* зөвхөн зүүн тал */
+    }
+    .m-short {
+      margin: 10px 40px 20px 120px;  /* дээд 10, баруун 40, доод 20, зүүн 120 */
+    }
+    .m-auto {
+      width: 200px;
+      margin: 10px auto;             /* дээд/доод 10px, зүүн/баруун auto = голлуулна */
+    }
+
+    /* ===================== 2. CSS PADDING =====================
+       padding - элементийн ДОТООД зай (агуулга болон хүрээний хоорондох зай).
+       padding-top, padding-right, padding-bottom, padding-left - тал бүрийг тусад нь өгнө.
+       Товчилсон бичиглэл нь margin-тай адил. Padding нь background өнгөтэй хамт будагдана. */
+    .p-none {
+      padding: 0;                    /* дотоод зай байхгүй - текст хүрээнд наалдана */
+    }
+    .p-all {
+      padding: 25px;                 /* 4 талд 25px дотоод зай */
+    }
+    .p-short {
+      padding: 5px 60px;             /* дээд/доод 5px, зүүн/баруун 60px */
+    }
+    .p-box-sizing {
+      width: 200px;
+      padding: 20px;
+      box-sizing: border-box;        /* padding-ийг width дотор тооцно - нийт өргөн 200px хэвээр */
+    }
+
+    /* ===================== 3. CSS ALIGN =====================
+       text-align - текстийг зүүн (left), гол (center), баруун (right), хоёр талд (justify) зэрэгцүүлнэ.
+       margin: auto - блок элементийг голлуулна.
+       vertical-align - мөр доторх (inline) элементийг босоо чиглэлд зэрэгцүүлнэ.
+       display: flex + justify-content / align-items - хэвтээ болон босоо чиглэлд голлуулна. */
+    .a-left   { text-align: left; }     /* зүүн тийш зэрэгцүүлэх */
+    .a-center { text-align: center; }   /* голлуулах */
+    .a-right  { text-align: right; }    /* баруун тийш зэрэгцүүлэх */
+    .a-justify {
+      text-align: justify;              /* мөр бүрийг хоёр захад тулгаж тэгшилнэ */
+      width: 300px;
+    }
+    .a-vertical img {
+      vertical-align: middle;           /* зургийг текстийн мөрний голд тааруулна */
+    }
+    .a-flex {
+      display: flex;
+      justify-content: center;          /* хэвтээ чиглэлд голлуулна */
+      align-items: center;              /* босоо чиглэлд голлуулна */
+      height: 120px;
+    }
+
+    /* ===================== 4. CSS BORDER & OUTLINE =====================
+       border - элементийн хүрээ. Зузаан (width), хэв маяг (style), өнгө (color) гэсэн 3 хэсэгтэй.
+       border-style: solid, dashed, dotted, double, groove, ridge, inset, outset, none.
+       border-radius - хүрээний булангуудыг бөөрөнхийлнэ.
+       outline - хүрээний ГАДНА зурагдах шугам. Элементийн хэмжээнд нөлөөлөхгүй, байрлалыг хөдөлгөхгүй.
+       outline-offset - outline болон border хоорондын зай. */
+    .b-solid  { border: 3px solid #e03131; }
+    .b-dashed { border: 3px dashed #2f9e44; }
+    .b-dotted { border: 3px dotted #1971c2; }
+    .b-double { border: 6px double #333; }
+    .b-sides {
+      border-top: 5px solid red;        /* зөвхөн дээд хүрээ */
+      border-bottom: 5px solid blue;    /* зөвхөн доод хүрээ */
+    }
+    .b-radius {
+      border: 3px solid #333;
+      border-radius: 15px;              /* булангуудыг 15px бөөрөнхийлнэ */
+    }
+    .o-outline {
+      border: 2px solid #333;
+      outline: 4px dashed #f08c00;      /* хүрээний гадуурх шугам */
+      outline-offset: 6px;              /* border-оос 6px зайтай зурна */
+    }
+
+    /* ===================== 5. CSS OPACITY =====================
+       opacity - элементийн тунгалаг байдал. 0 = бүрэн харагдахгүй, 1 = бүрэн харагдана.
+       Opacity нь элементийн дотор байгаа бүх зүйлд (текст, зураг) нөлөөлнө.
+       Зөвхөн background-ийг тунгалаг болгохыг хүсвэл rgba() өнгө ашиглана. */
+    .op-row div {
+      display: inline-block;
+      width: 90px;
+      padding: 15px 0;
+      text-align: center;
+      background: #7048e8;
+      color: #fff;
+    }
+    .op-10  { opacity: 0.1; }
+    .op-40  { opacity: 0.4; }
+    .op-70  { opacity: 0.7; }
+    .op-100 { opacity: 1; }
+    .op-hover:hover {
+      opacity: 0.5;                     /* хулганаар дээр нь очиход тунгалаг болно */
+    }
+    .op-row .op-rgba {
+      background: rgba(112, 72, 232, 0.3); /* зөвхөн арын өнгө 30% - текст тод хэвээр */
+      color: #000;
+    }
+
+    /* ===================== 6. CSS !important =====================
+       !important - тухайн шинж чанарыг !important-гүй бусад бүх дүрмээс (id, inline style) илүү эрхтэй болгоно.
+       Хоёр дүрэм хоёулаа !important бол сонгогч нь илүү нарийвчилсан (жишээ нь id) дүрэм ялна.
+       Ердийн үед id сонгогч (#) нь class сонгогчоос (.) илүү эрхтэй байдаг,
+       гэвч !important бичсэн дүрэм тэднийг дарна.
+       Хэт их ашиглавал код ойлгомжгүй болдог тул зайлшгүй үед л хэрэглэнэ. */
+    #imp-test {
+      background: #ffc9c9;              /* id сонгогч - ердийн үед ялна */
+    }
+    .imp-normal {
+      background: #b2f2bb;              /* class сонгогч - id-д ялагдана */
+    }
+    .imp-strong {
+      background: #b2f2bb !important;   /* !important тул id сонгогч болон inline style-ийг ч дарна */
+    }
+  </style>
+</head>
+<body>
+  <h1>Лаб 3 - CSS нэр томъёо болон шинж чанарууд</h1>
+
+  <!-- 1. MARGIN: элементийн гадна талын зай -->
+  <section>
+    <h2>1. CSS Margin</h2>
+    <div class="outer">
+      <div class="box m-all">margin: 30px - 4 талдаа 30px гадна зай</div>
+    </div>
+    <div class="outer">
+      <div class="box m-sides">margin-top: 10px; margin-left: 80px</div>
+    </div>
+    <div class="outer">
+      <div class="box m-short">margin: 10px 40px 20px 120px</div>
+    </div>
+    <div class="outer">
+      <div class="box m-auto">margin: auto - голлосон</div>
+    </div>
+  </section>
+
+  <!-- 2. PADDING: элементийн дотоод зай -->
+  <section>
+    <h2>2. CSS Padding</h2>
+    <p class="box p-none">padding: 0 - дотоод зай байхгүй</p>
+    <p class="box p-all">padding: 25px - 4 талдаа 25px дотоод зай</p>
+    <p class="box p-short">padding: 5px 60px - дээд/доод 5px, зүүн/баруун 60px</p>
+    <div class="box p-box-sizing">box-sizing: border-box - нийт өргөн 200px</div>
+  </section>
+
+  <!-- 3. ALIGN: зэрэгцүүлэлт -->
+  <section>
+    <h2>3. CSS Align</h2>
+    <p class="box a-left">text-align: left</p>
+    <p class="box a-center">text-align: center</p>
+    <p class="box a-right">text-align: right</p>
+    <p class="box a-justify">text-align: justify - энэ догол мөрийн урт текст нь мөр бүрийн хоёр захад тулж, үгсийн хоорондох зай автоматаар тохируулагдана.</p>
+    <p class="a-vertical">
+      vertical-align: middle →
+      <img src="../avatar.png" alt="Жишээ зураг" width="50" height="62">
+      ← зураг текстийн голд байна
+    </p>
+    <div class="outer a-flex">
+      <div class="box">flex - хэвтээ, босоо голд</div>
+    </div>
+  </section>
+
+  <!-- 4. BORDER & OUTLINE: хүрээ болон гадна шугам -->
+  <section>
+    <h2>4. CSS Border &amp; Outline</h2>
+    <p class="b-solid">border: 3px solid - битүү шугам</p>
+    <p class="b-dashed">border: 3px dashed - тасархай шугам</p>
+    <p class="b-dotted">border: 3px dotted - цэгэн шугам</p>
+    <p class="b-double">border: 6px double - давхар шугам</p>
+    <p class="b-sides">border-top / border-bottom - зөвхөн дээд, доод хүрээ</p>
+    <p class="b-radius">border-radius: 15px - бөөрөнхий булан</p>
+    <p class="o-outline">outline: 4px dashed + outline-offset: 6px</p>
+  </section>
+
+  <!-- 5. OPACITY: тунгалаг байдал -->
+  <section>
+    <h2>5. CSS Opacity</h2>
+    <div class="op-row">
+      <div class="op-10">0.1</div>
+      <div class="op-40">0.4</div>
+      <div class="op-70">0.7</div>
+      <div class="op-100">1</div>
+      <div class="op-hover">hover</div>
+      <div class="op-rgba">rgba 0.3</div>
+    </div>
+  </section>
+
+  <!-- 6. !important: дүрмийн давуу эрх -->
+  <section>
+    <h2>6. CSS !important</h2>
+    <!-- id болон class хоёулаа background өгсөн. id ялах тул ягаан өнгөтэй -->
+    <p id="imp-test" class="imp-normal">id + class - id ялсан тул ягаан</p>
+    <!-- !important-тэй class нь id-г дарж ногоон болно.
+         Нэг id-г зөвхөн нэг удаа ашиглах ёстой тул энд style="" (inline) ашиглан шалгав:
+         inline style ч гэсэн !important-д ялагдана -->
+    <p class="imp-strong" style="background: #ffc9c9;">inline style + !important class - !important ялсан тул ногоон</p>
+  </section>
+</body>
+</html>

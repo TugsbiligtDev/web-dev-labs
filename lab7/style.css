@@ -1,0 +1,271 @@
+/* ===== Ерөнхий ===== */
+body {
+  background: #f5f6f8;
+  font-size: 14px;
+  color: #495057;
+}
+.text-up   { color: #2fb67c; }
+.text-down { color: #f0646a; }
+.small-xs  { font-size: 11px; }
+.min-w-0   { min-width: 0; }   /* flex багана өргөн хүснэгтээр сунахгүй, хүснэгт өөрөө гүйлгэгдэнэ */
+
+/* ===== Зүүн цэс (sidebar) ===== */
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #fff;
+  border-right: 1px solid #eceef1;
+  flex-shrink: 0;
+}
+body.sidebar-collapsed .sidebar {
+  display: none !important;   /* desktop дээр ☰ товчоор цэсийг нуух */
+}
+.sidebar .offcanvas-body {
+  padding: 12px;
+}
+.sidebar .menu-title {
+  margin: 18px 10px 8px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #a6abb2;
+}
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: #5b6168;
+}
+.sidebar .nav-link:hover {
+  color: #3f8ce0;
+}
+.sidebar .nav-link.active {
+  background: #eef4fd;
+  color: #3f8ce0;
+}
+.sidebar .nav-link .bi-chevron-down,
+.sidebar .nav-link .badge {
+  margin-left: auto;
+}
+.sidebar .nav-link[aria-expanded="true"] .bi-chevron-down {
+  transform: rotate(180deg);
+}
+.sidebar .sub-menu .nav-link {
+  padding-left: 34px;
+  font-size: 13px;
+}
+.sidebar .sub-menu .nav-link::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-right: 6px;
+  border: 1px solid #a6abb2;
+  border-radius: 50%;
+}
+.sidebar .sub-menu .nav-link.current {
+  color: #212529;
+}
+.sidebar .sub-menu .nav-link.current::before {
+  background: #3f8ce0;
+  border-color: #3f8ce0;
+}
+
+/* ===== Дээд мөр (topbar) ===== */
+.topbar {
+  height: 64px;
+  background: #fff;
+  border-bottom: 1px solid #eceef1;
+}
+.topbar .dropdown-toggle,
+.dropdown-menu {
+  font-size: 13px;
+}
+.topbar .icon-btn {
+  border: none;
+  background: none;
+  font-size: 18px;
+  color: #5b6168;
+  position: relative;
+}
+.topbar .dot {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f0646a;
+}
+
+/* ===== Нэрийн эхний үсэгтэй дугуй зураг ===== */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.avatar-group .avatar + .avatar {
+  margin-left: -10px;
+}
+
+/* ===== Карт ===== */
+.card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.card-title-sm {
+  font-size: 14px;
+  font-weight: 600;
+  color: #343a40;
+  margin: 0;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  background: #eef4fd;
+  color: #3f8ce0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.tag.dev {
+  background: #e8f7fc;
+  color: #44b8e0;
+}
+
+/* ===== Analytics: шугаман график ===== */
+.line-chart {
+  width: 100%;
+  flex: 1;              /* картын үлдсэн өндрийг бүтэн дүүргэнэ */
+  min-height: 300px;
+  display: block;
+}
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6c757d;
+}
+
+/* ===== Analytics: баганан график ===== */
+.bar-chart {
+  display: flex;
+  height: 140px;
+}
+.bar-chart .y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #6c757d;
+  padding-right: 10px;
+}
+.bar-chart .bars {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  border-bottom: 1px solid #eceef1;
+}
+.bar-chart .bar {
+  width: 6px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+.bar-chart .this-month { background: #3f8ce0; }
+.bar-chart .prev-month { background: #b9d6f5; }
+.legend-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 3px;
+  border-radius: 2px;
+}
+
+/* ===== Analytics: дугуй (donut) график ===== */
+.donut {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  border-radius: 50%;
+  /* conic-gradient: тойргийг хувиар хувааж будна */
+  background: conic-gradient(#3f8ce0 0 50%, #eef0f3 50% 72%, #74c4f0 72% 100%);
+  -webkit-mask: radial-gradient(circle, transparent 52px, #000 53px);
+  mask: radial-gradient(circle, transparent 52px, #000 53px);
+}
+
+/* ===== Статистикийн жижиг дугуй icon ===== */
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #3f8ce0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rank {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eef4fd;
+  color: #3f8ce0;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Хүснэгт ===== */
+.table > :not(caption) > * > * {
+  padding: 12px 10px;
+  color: #5b6168;
+}
+.table thead th {
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* ===== Хуудаслалт ===== */
+.pagination .page-link {
+  border: none;
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b6168;
+  margin: 0 3px;
+}
+.pagination .active .page-link {
+  background: #3f8ce0;
+  color: #fff;
+}
+
+/* ===== Төслийн табууд ===== */
+.project-tabs .nav-link {
+  color: #343a40;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 14px;
+}
+.project-tabs .nav-link.active {
+  color: #3f8ce0;
+  border-bottom-color: #3f8ce0;
+  background: none;
+}

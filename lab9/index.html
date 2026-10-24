@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Шагай морь уралдуулах</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px 16px;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
+    .board {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 20px 30px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    /* ===== Дээд хэсэг: шагай, товч, мэдээлэл ===== */
+    .top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 24px;
+    }
+    .shagai-row {
+      display: flex;
+    }
+    .shagai {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .shagai img {
+      display: block;
+      width: 80px;
+      height: 71px;
+    }
+    /* Морь буусан шагайг тодруулна */
+    .shagai.horse span {
+      color: #fff;
+      background: #c0650a;
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+    .shagai.rolling img {
+      animation: roll 0.4s;
+    }
+    @keyframes roll {
+      0%   { transform: rotate(0) translateY(0); }
+      40%  { transform: rotate(160deg) translateY(-12px); }
+      100% { transform: rotate(360deg) translateY(0); }
+    }
+    #throwBtn {
+      padding: 10px 18px;
+      border: 4px solid #f59e0b;
+      border-radius: 12px;
+      background: #c0650a;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #throwBtn:hover {
+      background: #a85708;
+    }
+    #status {
+      font-size: 16px;
+      font-weight: bold;
+      min-height: 1.2em;
+    }
+
+    /* ===== Уралдааны зам ===== */
+    .race {
+      position: relative;
+      margin-top: 40px;
+    }
+    .lane {
+      display: flex;
+      align-items: center;
+      height: 150px;
+    }
+    .lane + .lane {
+      border-top: 3px dashed #222;
+    }
+    .lane.current .name {
+      color: #c0650a;
+    }
+    .name {
+      width: 130px;
+      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .track {
+      position: relative;
+      flex: 1;
+      height: 100%;
+    }
+    /* Морины байрлал: --pos нь 0-оос FINISH хүртэлх алхам */
+    .horse {
+      position: absolute;
+      top: 15px;
+      left: calc((100% - 140px) * var(--pos) / var(--finish));
+      width: 140px;
+      height: 119px;
+      transition: left 0.6s ease-out;
+    }
+    /* Барианы шугам */
+    .finish {
+      position: absolute;
+      top: -40px;
+      bottom: -30px;
+      right: 0;
+      width: 22px;
+      background: repeating-conic-gradient(#000 0 25%, #fff 0 50%) 0 0 / 11px 11px;
+    }
+
+    @media (max-width: 640px) {
+      .shagai img { width: 60px; height: 53px; }
+      .name { width: 80px; font-size: 14px; }
+      .lane { height: 110px; }
+      .horse { width: 90px; height: 76px; left: calc((100% - 90px) * var(--pos) / var(--finish)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="board">
+    <div class="top">
+      <!-- 4 шагай: JavaScript орхих бүрт зураг, нэрийг солино -->
+      <div class="shagai-row" id="shagaiRow"></div>
+      <button id="throwBtn" type="button">Шагай орхих</button>
+      <div id="status" aria-live="polite"></div>
+    </div>
+
+    <div class="race">
+      <div class="lane" id="lane0">
+        <div class="name">Тоглогч 1</div>
+        <div class="track"><img class="horse" src="horse.png" alt="Тоглогч 1-ийн морь"></div>
+      </div>
+      <div class="lane" id="lane1">
+        <div class="name">Тоглогч 2</div>
+        <div class="track"><img class="horse" src="horse.png" alt="Тоглогч 2-ын морь"></div>
+      </div>
+      <div class="finish" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    // Барианд хүрэх алхмын тоо
+    const FINISH = 8;
+
+    // Шагайн 4 тал. Зургийн дараалал нь слайдын зүүнээс баруун тийш.
+    const SIDES = [
+      { name: 'Морь',  img: 'shagai1.png' },
+      { name: 'Тэмээ', img: 'shagai2.png' },
+      { name: 'Хонь',  img: 'shagai3.png' },
+      { name: 'Ямаа',  img: 'shagai4.png' }
+    ];
+    const HORSE = 0;   // SIDES дахь "Морь"-ийн индекс
+
+    const shagaiRow = document.getElementById('shagaiRow');
+    const throwBtn = document.getElementById('throwBtn');
+    const status = document.getElementById('status');
+    const lanes = [document.getElementById('lane0'), document.getElementById('lane1')];
+    const horses = document.querySelectorAll('.horse');
+
+    let positions = [0, 0];   // 2 тоглогчийн алхам
+    let turn = 0;             // 0 = Тоглогч 1, 1 = Тоглогч 2
+    let gameOver = false;
+
+    // "Тоглогч 1-ийн", "Тоглогч 2-ын" (Монгол хэлний харьяалахын нөхцөл)
+    function whose(n) {
+      return 'Тоглогч ' + n + (n === 1 ? '-ийн' : '-ын');
+    }
+
+    // 4 шагайг (зураг + нэр) үүсгэнэ
+    const shagaiEls = [];
+    for (let i = 0; i < 4; i++) {
+      const div = document.createElement('div');
+      div.className = 'shagai';
+      const img = document.createElement('img');
+      const label = document.createElement('span');
+      div.appendChild(img);
+      div.appendChild(label);
+      shagaiRow.appendChild(div);
+      shagaiEls.push({ div: div, img: img, label: label });
+    }
+
+    // Нэг шагайд тал (side) харуулна
+    function showSide(index, side) {
+      const el = shagaiEls[index];
+      el.img.src = SIDES[side].img;
+      el.img.alt = SIDES[side].name;
+      el.label.innerText = SIDES[side].name;
+      el.div.classList.toggle('horse', side === HORSE && !gameOver);
+    }
+
+    // Морьдыг байрлалд нь байршуулж, ээлжтэй тоглогчийг тодруулна
+    function render() {
+      horses.forEach(function (h, i) {
+        h.style.setProperty('--pos', positions[i]);
+        h.style.setProperty('--finish', FINISH);
+      });
+      lanes.forEach(function (lane, i) {
+        lane.classList.toggle('current', i === turn && !gameOver);
+      });
+    }
+
+    function newGame() {
+      positions = [0, 0];
+      turn = 0;
+      gameOver = false;
+      for (let i = 0; i < 4; i++) showSide(i, i);   // эхэндээ 4 талыг бүгдийг харуулна
+      shagaiEls.forEach(function (el) { el.div.classList.remove('horse'); });
+      throwBtn.innerText = 'Шагай орхих';
+      status.innerText = whose(1) + ' ээлж';
+      render();
+    }
+
+    throwBtn.addEventListener('click', function () {
+      if (gameOver) {
+        newGame();
+        return;
+      }
+
+      // 4 шагай орхиж, морь буусныг тоолно
+      let horseCount = 0;
+      for (let i = 0; i < 4; i++) {
+        const side = Math.floor(Math.random() * 4);
+        if (side === HORSE) horseCount++;
+        showSide(i, side);
+        // Эргэх хөдөлгөөнийг дахин эхлүүлнэ
+        shagaiEls[i].div.classList.remove('rolling');
+        void shagaiEls[i].div.offsetWidth;
+        shagaiEls[i].div.classList.add('rolling');
+      }
+
+      const player = turn + 1;
+      positions[turn] = Math.min(positions[turn] + horseCount, FINISH);
+
+      if (positions[turn] === FINISH) {
+        gameOver = true;
+        status.innerText = '🏆 Тоглогч ' + player + ' түрүүллээ!';
+        throwBtn.innerText = 'Дахин тоглох';
+      } else {
+        turn = 1 - turn;
+        status.innerText = (horseCount === 0 ? 'Морь буусангүй' : horseCount + ' морь буулаа')
+          + ' → ' + whose(turn + 1) + ' ээлж';
+      }
+      render();
+    });
+
+    newGame();
+  </script>
+</body>
+</html>

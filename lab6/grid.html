@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дасгал 2 - Grid</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    .box {
+      height: 100px;
+      border-radius: 16px;
+    }
+    .green { background: #00f59b; }
+    .blue  { background: #6abbfb; }
+    .red   { background: #ff5a5a; }
+    .grey  { background: #d9d9d9; }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <!-- Bootstrap grid нь мөр бүрийг 12 баганад хуваана.
+         col-*    : mobile (768px-ээс бага) дэлгэц дээрх өргөн
+         col-md-* : desktop (768px ба түүнээс өргөн) дэлгэц дээрх өргөн
+         Нийлбэр нь 12-оос хэтэрвэл дараагийн мөрөнд шилжинэ. -->
+    <div class="row g-3">
+      <!-- Mobile: 6+6 | Desktop: 3+3+6 -->
+      <div class="col-6 col-md-3"><div class="box green"></div></div>
+      <div class="col-6 col-md-3"><div class="box green"></div></div>
+      <div class="col-12 col-md-6"><div class="box blue"></div></div>
+
+      <!-- Mobile: 12, дараа нь 6+6 | Desktop: 6+6 -->
+      <div class="col-12 col-md-6"><div class="box red"></div></div>
+      <div class="col-6 col-md-6"><div class="box red"></div></div>
+
+      <!-- Mobile: 6 (улаантай нэг мөрөнд) | Desktop: 12 (бүтэн мөр) -->
+      <div class="col-6 col-md-12"><div class="box grey"></div></div>
+    </div>
+  </div>
+</body>
+</html>

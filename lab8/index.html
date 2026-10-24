@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Хэрэглэгчийн бүртгэл</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px 16px;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
+    .card {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 30px 40px;
+      background: #fff;
+      border-radius: 12px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 32px;
+    }
+    .layout {
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+    }
+    /* ===== Форм ===== */
+    form {
+      width: 280px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    form input {
+      padding: 14px 18px;
+      border: 3px solid #5aaef2;
+      border-radius: 12px;
+      background: #efefef;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    form input::placeholder {
+      color: #bbb;
+    }
+    form button {
+      align-self: flex-end;
+      padding: 12px 30px;
+      border: 3px solid #1a8cf0;
+      border-radius: 12px;
+      background: #d4e9fb;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    /* ===== Хүснэгт ===== */
+    table {
+      flex: 1;
+      border-collapse: collapse;
+      background: #eee;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    th, td {
+      border: 3px solid #5aaef2;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    th:first-child, td:first-child {
+      width: 30px;
+    }
+    .delete-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 4px;
+      background: #f4c2c2;
+      color: #e00;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .empty-row td {
+      height: 80px;
+    }
+    /* Жижиг дэлгэц дээр форм, хүснэгтийг доош нь байрлуулна */
+    @media (max-width: 760px) {
+      .layout {
+        flex-direction: column;
+        gap: 30px;
+      }
+      form, table {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Хэрэглэгчийн бүртгэл</h1>
+
+    <div class="layout">
+      <form id="userForm">
+        <input type="text" id="lastName" placeholder="Овог . . ." aria-label="Овог" pattern=".*\S.*" required>
+        <input type="text" id="firstName" placeholder="Нэр . . ." aria-label="Нэр" pattern=".*\S.*" required>
+        <input type="number" id="age" placeholder="Нас . . ." aria-label="Нас" min="1" max="150" required>
+        <button type="submit">Бүртгэх</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Овог</th>
+            <th>Нэр</th>
+            <th>Нас</th>
+            <th>Үйлдэл</th>
+          </tr>
+        </thead>
+        <tbody id="userList">
+          <!-- Бүртгэл байхгүй үед харагдах хоосон мөр -->
+          <tr class="empty-row" id="emptyRow">
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // ===== DOM элемент хайх: getElementById =====
+    const form = document.getElementById('userForm');
+    const lastNameInput = document.getElementById('lastName');
+    const firstNameInput = document.getElementById('firstName');
+    const ageInput = document.getElementById('age');
+    const userList = document.getElementById('userList');
+    const emptyRow = document.getElementById('emptyRow');
+
+    // Нэг нүд (td) үүсгээд текст оноох туслах функц
+    function createCell(text) {
+      const td = document.createElement('td');   // DOM элемент үүсгэх: createElement
+      td.innerText = text;                        // innerText: хэрэглэгчийн бичсэнийг HTML биш, энгийн текстээр оруулна
+      return td;
+    }
+
+    // № баганыг 1, 2, 3 ... гэж дахин дугаарлана, хоосон мөрийг харуулах эсэхийг шийднэ
+    function updateTable() {
+      const rows = userList.getElementsByClassName('user-row');   // DOM элемент хайх: getElementsByClassName
+      for (let i = 0; i < rows.length; i++) {
+        rows[i].firstElementChild.innerText = i + 1;
+      }
+      emptyRow.style.display = rows.length === 0 ? '' : 'none';  // CSS шинж чанар өөрчлөх: style
+    }
+
+    // Шинэ хэрэглэгчийн мөрийг хүснэгтэд нэмнэ
+    function addUser(lastName, firstName, age) {
+      const tr = document.createElement('tr');
+      tr.setAttribute('class', 'user-row');        // Атрибут өөрчлөх: setAttribute
+
+      tr.appendChild(createCell(''));              // № (updateTable дугаарлана)
+      tr.appendChild(createCell(lastName));
+      tr.appendChild(createCell(firstName));
+      tr.appendChild(createCell(age));
+
+      // Устгах (✕) товч
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.innerText = '✕';
+      deleteBtn.setAttribute('aria-label', firstName + '-г устгах');
+      deleteBtn.addEventListener('click', function () {
+        tr.remove();                               // DOM элемент устгах: remove
+        updateTable();
+      });
+      const actionCell = createCell('');
+      actionCell.appendChild(deleteBtn);
+      tr.appendChild(actionCell);
+
+      userList.insertBefore(tr, emptyRow);         // Хоосон мөрийн өмнө нэмнэ
+      updateTable();
+    }
+
+    // "Бүртгэх" товч дарахад (эсвэл Enter)
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();                      // Хуудсыг дахин ачаалахгүй
+      addUser(lastNameInput.value.trim(), firstNameInput.value.trim(), ageInput.value);
+      form.reset();                                // Талбаруудыг хоосолно
+      lastNameInput.focus();
+    });
+
+    // Загвар дээрх жишээ мөр
+    addUser('Бат', 'Болд', 30);
+  </script>
+</body>
+</html>

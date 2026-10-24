@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User List | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="d-flex">
+  <!-- ===== Зүүн цэс: том дэлгэц дээр байнга харагдана, жижиг дэлгэц дээр ☰ товчоор гулсаж гарна ===== -->
+  <aside class="sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-label="Цэс">
+    <div class="offcanvas-header d-lg-none">
+      <span class="fw-semibold">Menu</span>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+    </div>
+    <nav class="offcanvas-body flex-column">
+      <div class="menu-title">Dashboards</div>
+      <a class="nav-link" href="#"><i class="bi bi-display"></i>Sales<span class="badge rounded-pill text-bg-light">5+</span></a>
+      <a class="nav-link" href="analytics.html"><i class="bi bi-pie-chart"></i>Analytics</a>
+      <div class="menu-title">Applications</div>
+      <a class="nav-link" href="#"><i class="bi bi-calendar"></i>Calendar</a>
+      <a class="nav-link" href="#"><i class="bi bi-chat-square"></i>Chat<span class="badge text-bg-danger bg-opacity-10 text-danger">Hot</span></a>
+      <a class="nav-link" href="#"><i class="bi bi-kanban"></i>Kanban Board</a>
+      <a class="nav-link" href="#"><i class="bi bi-folder"></i>File Manager</a>
+      <a class="nav-link" href="#"><i class="bi bi-envelope"></i>Email<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link active" data-bs-toggle="collapse" href="#menuContacts" role="button" aria-expanded="true" aria-controls="menuContacts"><i class="bi bi-journal-text"></i>Contacts<i class="bi bi-chevron-down small"></i></a>
+      <div class="collapse sub-menu show" id="menuContacts">
+        <a class="nav-link" href="#">User Grid</a>
+        <a class="nav-link current" href="users.html" aria-current="page">User List</a>
+        <a class="nav-link" href="#">User Settings</a>
+      </div>
+      <a class="nav-link" href="#"><i class="bi bi-image"></i>Gallery</a>
+      <a class="nav-link" data-bs-toggle="collapse" href="#menuProjects" role="button" aria-expanded="false" aria-controls="menuProjects"><i class="bi bi-briefcase"></i>Projects<i class="bi bi-chevron-down small"></i></a>
+      <div class="collapse sub-menu" id="menuProjects">
+        <a class="nav-link" href="projects.html">Projects Grid</a>
+        <a class="nav-link" href="#">Projects List</a>
+        <a class="nav-link" href="#">Project Overview</a>
+        <a class="nav-link" href="#">Create New</a>
+      </div>
+      <div class="menu-title">Layouts</div>
+      <a class="nav-link" href="#"><i class="bi bi-layout-text-window"></i>Horizontal</a>
+      <div class="menu-title">Pages</div>
+      <a class="nav-link" href="#"><i class="bi bi-person"></i>Authentication<span class="badge rounded-pill text-bg-info text-white">9</span></a>
+      <a class="nav-link" href="#"><i class="bi bi-exclamation-circle"></i>Error Pages<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-file-earmark"></i>Utility<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-tag"></i>Pricing<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-receipt"></i>Invoices<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-award"></i>Timeline<i class="bi bi-chevron-down small"></i></a>
+      <div class="menu-title">Components</div>
+      <a class="nav-link" href="#"><i class="bi bi-box"></i>UI Elements<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-gear-wide"></i>Extended UI<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-grid"></i>Widgets</a>
+      <a class="nav-link" href="#"><i class="bi bi-pencil"></i>Forms<i class="bi bi-chevron-down small"></i></a>
+      <a class="nav-link" href="#"><i class="bi bi-table"></i>Tables<i class="bi bi-chevron-down small"></i></a>
+    </nav>
+  </aside>
+
+  <div class="flex-grow-1 min-w-0">
+    <!-- ===== Дээд мөр ===== -->
+    <header class="topbar d-flex align-items-center px-3 gap-2">
+      <button class="icon-btn" id="menuToggle" aria-label="Toggle menu"><i class="bi bi-list"></i></button>
+      <div class="dropdown d-none d-md-block">
+        <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Components</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">UI Elements</a></li>
+          <li><a class="dropdown-item" href="#">Forms</a></li>
+          <li><a class="dropdown-item" href="#">Tables</a></li>
+        </ul>
+      </div>
+      <div class="dropdown d-none d-md-block">
+        <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Categories</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Design</a></li>
+          <li><a class="dropdown-item" href="#">Development</a></li>
+        </ul>
+      </div>
+      <div class="ms-auto d-flex align-items-center gap-1">
+        <button class="icon-btn" aria-label="Search"><i class="bi bi-search"></i></button>
+        <button class="icon-btn d-none d-sm-inline" aria-label="Language">&#127482;&#127480;</button>
+        <button class="icon-btn d-none d-sm-inline" aria-label="Apps"><i class="bi bi-grid"></i></button>
+        <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i><span class="dot"></span></button>
+        <button class="icon-btn d-none d-sm-inline" aria-label="Settings"><i class="bi bi-gear"></i></button>
+        <div class="d-flex align-items-center gap-2 ms-2">
+          <span class="avatar" style="background:#8a6d5b">KD</span>
+          <div class="d-none d-md-block lh-sm">
+            <div class="fw-semibold text-dark small">Kate Dudley</div>
+            <div class="small-xs text-muted">Administrator</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-3 p-lg-4">
+      <!-- Хуудасны гарчиг ба breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h6 fw-semibold text-dark m-0">User List</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb small m-0">
+            <li class="breadcrumb-item"><a class="text-dark text-decoration-none" href="#">Contacts</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User List</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="card">
+        <div class="card-body p-4">
+          <!-- Хүснэгтийн дээд хэсэг -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <h2 class="card-title-sm">Contact List <span class="text-muted fw-normal">(834)</span></h2>
+            <div class="d-flex gap-2">
+              <a class="btn btn-primary btn-sm" href="users.html" aria-current="page" aria-label="List view"><i class="bi bi-list-ul"></i></a>
+              <a class="btn btn-light btn-sm" href="#" aria-label="Grid view"><i class="bi bi-grid"></i></a>
+              <button class="btn btn-light btn-sm"><i class="bi bi-plus"></i> Add New</button>
+              <button class="btn btn-sm" aria-label="More"><i class="bi bi-three-dots"></i></button>
+            </div>
+          </div>
+
+          <!-- table-responsive: жижиг дэлгэц дээр хүснэгтийг хажуу тийш гүйлгэнэ -->
+          <div class="table-responsive">
+            <table class="table align-middle text-nowrap">
+              <thead>
+                <tr>
+                  <th style="width:30px"><input class="form-check-input" type="checkbox" aria-label="Select all"></th>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Email</th>
+                  <th>Tags</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Donald Risher"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#8a6d5b">DR</span><span class="fw-semibold text-dark">Donald Risher</span></div></td>
+                <td>UI/UX Designer</td>
+                <td>DonaldRisher@Dashonic.com</td>
+                <td><span class="tag">Photoshop</span> <span class="tag">illustrator</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Donald Risher"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Helen Barron"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#5b6f8a">HB</span><span class="fw-semibold text-dark">Helen Barron</span></div></td>
+                <td>Frontend Developer</td>
+                <td>HelenBarron@Dashonic.com</td>
+                <td><span class="tag">Html</span> <span class="tag">Css</span> <span class="tag">2 + more</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Helen Barron"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Philip Theroux"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#6c8a5b">PT</span><span class="fw-semibold text-dark">Philip Theroux</span></div></td>
+                <td>Backend Developer</td>
+                <td>PhilipTheroux@Dashonic.com</td>
+                <td><span class="tag">Php</span> <span class="tag">Java</span> <span class="tag">Python</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Philip Theroux"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Justin McClain"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#8a5b78">JM</span><span class="fw-semibold text-dark">Justin McClain</span></div></td>
+                <td>Full Stack Developer</td>
+                <td>JustinMcClain@Dashonic.com</td>
+                <td><span class="tag">Ruby</span> <span class="tag">Php</span> <span class="tag">2 + more</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Justin McClain"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Sharon Carver"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#5b8a86">SC</span><span class="fw-semibold text-dark">Sharon Carver</span></div></td>
+                <td>Frontend Developer</td>
+                <td>SharonCarver@Dashonic.com</td>
+                <td><span class="tag">Html</span> <span class="tag">Css</span> <span class="tag">2 + more</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Sharon Carver"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Jody Tondreau"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#a07a4f">JT</span><span class="fw-semibold text-dark">Jody Tondreau</span></div></td>
+                <td>UI/UX Designer</td>
+                <td>JodyTondreau@Dashonic.com</td>
+                <td><span class="tag">Photoshop</span> <span class="tag">illustrator</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Jody Tondreau"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Dennis Goulet"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#4f6fa0">DG</span><span class="fw-semibold text-dark">Dennis Goulet</span></div></td>
+                <td>Graphic Designer</td>
+                <td>DennisGoulet@Dashonic.com</td>
+                <td><span class="tag">Photoshop</span> <span class="tag">illustrator</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Dennis Goulet"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Cecelia Farrell"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#7a4fa0">CF</span><span class="fw-semibold text-dark">Cecelia Farrell</span></div></td>
+                <td>Angular Developer</td>
+                <td>CeceliaFarrell@Dashonic.com</td>
+                <td><span class="tag">Php</span> <span class="tag">Javascript</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Cecelia Farrell"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Peter Dryer"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#a04f5e">PD</span><span class="fw-semibold text-dark">Peter Dryer</span></div></td>
+                <td>Web Designer</td>
+                <td>PeterDryer@Dashonic.com</td>
+                <td><span class="tag">Html</span> <span class="tag">Css</span> <span class="tag">2 + more</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Peter Dryer"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input class="form-check-input" type="checkbox" aria-label="Select Gerald Moyer"></td>
+                <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#4fa07a">GM</span><span class="fw-semibold text-dark">Gerald Moyer</span></div></td>
+                <td>Backend Developer</td>
+                <td>GeraldMoyer@Dashonic.com</td>
+                <td><span class="tag">Php</span> <span class="tag">Javascript</span></td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Actions for Gerald Moyer"><i class="bi bi-three-dots"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+            <span class="small">Showing 1 to 10 of 57 entries</span>
+          <nav aria-label="User list pages">
+            <ul class="pagination pagination-sm m-0 align-items-center">
+              <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><i class="bi bi-chevron-left"></i></a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active" aria-current="page"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">5</a></li>
+              <li class="page-item"><a class="page-link" href="#" aria-label="Next"><i class="bi bi-chevron-right"></i></a></li>
+            </ul>
+          </nav>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="app.js"></script>
+</body>
+</html>

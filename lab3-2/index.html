@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2ec4a5, #1a9e95);
+      font-family: Nunito, Arial, sans-serif;
+    }
+    .card {
+      display: flex;
+      width: 1000px;
+      height: 640px;
+      background: #fafafa;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    }
+    /* Зүүн тал: зураг */
+    .photo {
+      width: 491px;                     /* зургийн харьцаатай тэнцүү (640px өндөр) - хажуу тал тасрахгүй */
+      flex-shrink: 0;
+      background: url("photo.jpg") center / cover;
+    }
+    /* Баруун тал: бүртгэлийн форм */
+    .form-side {
+      flex: 1;
+      padding: 50px 50px;
+    }
+    h1 {
+      margin: 0;
+      color: #1aa39a;
+      font-size: 34px;
+      font-weight: 800;
+      text-align: center;
+    }
+    .subtitle {
+      margin: 0 0 30px;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #2e2a5a;
+    }
+    /* Мөр бүр: зүүн талд label, баруун талд талбар */
+    .row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .row > label,
+    .row > span {
+      font-size: 13px;
+      font-weight: 800;
+      color: #2e2a5a;
+    }
+    /* Идэвхтэй талбарын label ногоон болно (загвар дээрх Email шиг) */
+    .row:focus-within > label {
+      color: #1aa39a;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    select {
+      height: 40px;
+      padding: 0 15px;
+      border: none;
+      background: #efefef;
+      font-family: inherit;
+      font-size: 13px;
+      color: #555;
+    }
+    input:focus,
+    select:focus {
+      outline: 2px solid #1aa39a;
+    }
+    /* Хүйс: дугуй radio товч */
+    .gender {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #555;
+    }
+    .gender input {
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      margin: 0;
+      border-radius: 50%;
+      background: #2e2a5a;
+      cursor: pointer;
+    }
+    .gender input:checked {
+      background: #1aa39a;
+      box-shadow: inset 0 0 0 7px #1aa39a, inset 0 0 0 10px #fff;
+    }
+    .gender label {
+      margin-right: 18px;
+      cursor: pointer;
+    }
+    /* Захиалгын төрөл: radio-г нууж, сонгосон текстийг ногоон болгоно */
+    .plans {
+      display: flex;
+      justify-content: space-around;
+    }
+    .plans input {
+      position: absolute;
+      opacity: 0;
+    }
+    .plans label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2e2a5a;
+      cursor: pointer;
+    }
+    .plans input:checked + label {
+      color: #1aa39a;
+    }
+    .plans input:focus-visible + label {
+      outline: 2px solid #1aa39a;
+    }
+    /* Товчнууд */
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-left: 120px;
+      margin-top: 24px;
+    }
+    .buttons button {
+      height: 44px;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .cancel {
+      background: #2e2a5a;
+      text-transform: uppercase;
+    }
+    .confirm {
+      background: #1aa39a;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="photo" role="img" aria-label="Hand holding a camera lens among green leaves"></div>
+
+    <div class="form-side">
+      <h1>Registration</h1>
+      <p class="subtitle">CLICK FOR YOUR SHOOT</p>
+
+      <form>
+        <div class="row">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Tanvir Hasan" required>
+        </div>
+
+        <div class="row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="ftanvirhasan@gmail.com" required>
+        </div>
+
+        <div class="row">
+          <span>Gender</span>
+          <div class="gender">
+            <input type="radio" id="male" name="gender" value="male" checked>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob" value="1977-05-25">
+        </div>
+
+        <div class="row">
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" placeholder="Dhaka">
+        </div>
+
+        <div class="row">
+          <label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="bd">Bangladesh</option>
+            <option value="mn">Mongolia</option>
+            <option value="jp">Japan</option>
+            <option value="kr">South Korea</option>
+            <option value="us">United States</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <span>Subscription</span>
+          <div class="plans">
+            <input type="radio" id="bronze" name="plan" value="bronze">
+            <label for="bronze">Bronze</label>
+            <input type="radio" id="silver" name="plan" value="silver" checked>
+            <label for="silver">Silver</label>
+            <input type="radio" id="gold" name="plan" value="gold">
+            <label for="gold">Gold</label>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button type="reset" class="cancel">Cancel</button>
+          <button type="submit" class="confirm">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
