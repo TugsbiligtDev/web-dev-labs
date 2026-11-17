@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Excel</title>
+  <!-- SheetJS: Excel (.xlsx) файлыг задлах сан -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <h1>FileReader()</h1>
+
+  <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
+  <p id="message" hidden></p>
+  <table id="result" border="1"></table>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const table = document.getElementById('result');
+    const message = document.getElementById('message');
+
+    fileInput.addEventListener('change', function () {
+      const file = fileInput.files[0];
+      table.innerHTML = '';
+      message.hidden = true;
+      if (!file) return;
+
+      // FileReader: Excel файлыг байт (ArrayBuffer) хэлбэрээр уншина
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        let rows;
+        try {
+          // SheetJS: байтыг Excel ном (workbook) болгон задлана
+          const workbook = XLSX.read(reader.result, { type: 'array' });
+          // Эхний хуудас (sheet)-ыг авна
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          // Мөр бүрийг массив болгоно: [["№","Овог","Нэр"], [1,"Эрдэнэбаяр","Аззаяа"], ...]
+          rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+        } catch (err) {
+          message.innerText = 'Файлыг уншиж чадсангүй. Excel файл сонгоно уу.';
+          message.hidden = false;
+          return;
+        }
+
+        if (rows.length === 0) {
+          message.innerText = 'Файл хоосон байна.';
+          message.hidden = false;
+          return;
+        }
+
+        // Мөр бүрээр хүснэгт үүсгэнэ (эхний мөр нь гарчиг)
+        rows.forEach(function (row, rowIndex) {
+          const tr = document.createElement('tr');
+          row.forEach(function (value) {
+            const cell = document.createElement(rowIndex === 0 ? 'th' : 'td');
+            cell.innerText = value;   // innerText: файл доторх текстийг HTML биш, энгийн текстээр оруулна
+            tr.appendChild(cell);
+          });
+          table.appendChild(tr);
+        });
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
+</body>
+</html>

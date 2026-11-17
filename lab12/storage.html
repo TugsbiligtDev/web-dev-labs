@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie, localStorage, sessionStorage</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="h3 mb-4">Өгөгдөл хадгалах, унших, устгах</h1>
+
+    <div class="row g-4">
+      <!-- Гурван хэсэг ижил бүтэцтэй: data-store нь аль хадгалалт болохыг заана -->
+      <div class="col-lg-4">
+        <div class="card h-100" data-store="cookie">
+          <div class="card-body">
+            <h2 class="h5"><code>document.cookie</code></h2>
+            <p class="small text-muted">Browser-т жижиг текст хадгална. Энд 7 хоног хадгалагдана.</p>
+            <div class="alert alert-warning small py-2 d-none" data-file-warning>
+              Browser нь <code>file://</code> хуудсанд cookie хадгалдаггүй. Хуудсыг сервер (жишээ нь VS Code Live Server) ашиглан нээнэ үү.
+            </div>
+            <input class="form-control mb-2" placeholder="Түлхүүр (key)" aria-label="Cookie key" data-key>
+            <input class="form-control mb-2" placeholder="Утга (value)" aria-label="Cookie value" data-value>
+            <div class="btn-group w-100 mb-3">
+              <button class="btn btn-primary" data-action="save">Хадгалах</button>
+              <button class="btn btn-outline-primary" data-action="read">Унших</button>
+              <button class="btn btn-outline-danger" data-action="delete">Устгах</button>
+            </div>
+            <div class="small" data-output aria-live="polite"></div>
+            <h3 class="h6 mt-3">Одоо хадгалагдсан:</h3>
+            <ul class="list-group list-group-flush small" data-list></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100" data-store="local">
+          <div class="card-body">
+            <h2 class="h5"><code>localStorage</code></h2>
+            <p class="small text-muted">Browser-ийг хаасан ч устахгүй, хугацаагүй хадгалагдана.</p>
+            <input class="form-control mb-2" placeholder="Түлхүүр (key)" aria-label="localStorage key" data-key>
+            <input class="form-control mb-2" placeholder="Утга (value)" aria-label="localStorage value" data-value>
+            <div class="btn-group w-100 mb-3">
+              <button class="btn btn-primary" data-action="save">Хадгалах</button>
+              <button class="btn btn-outline-primary" data-action="read">Унших</button>
+              <button class="btn btn-outline-danger" data-action="delete">Устгах</button>
+            </div>
+            <div class="small" data-output aria-live="polite"></div>
+            <h3 class="h6 mt-3">Одоо хадгалагдсан:</h3>
+            <ul class="list-group list-group-flush small" data-list></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100" data-store="session">
+          <div class="card-body">
+            <h2 class="h5"><code>sessionStorage</code></h2>
+            <p class="small text-muted">Зөвхөн энэ tab нээлттэй байх хооронд хадгалагдана. Tab хаахад устна.</p>
+            <input class="form-control mb-2" placeholder="Түлхүүр (key)" aria-label="sessionStorage key" data-key>
+            <input class="form-control mb-2" placeholder="Утга (value)" aria-label="sessionStorage value" data-value>
+            <div class="btn-group w-100 mb-3">
+              <button class="btn btn-primary" data-action="save">Хадгалах</button>
+              <button class="btn btn-outline-primary" data-action="read">Унших</button>
+              <button class="btn btn-outline-danger" data-action="delete">Устгах</button>
+            </div>
+            <div class="small" data-output aria-live="polite"></div>
+            <h3 class="h6 mt-3">Одоо хадгалагдсан:</h3>
+            <ul class="list-group list-group-flush small" data-list></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Cookie =====
+    // document.cookie-д "нэр=утга; max-age=...; path=/" гэж оноож хадгална.
+    // Унших үед бүх cookie "a=1; b=2" гэсэн нэг текст болж ирдэг тул задлах хэрэгтэй.
+    const cookieStore = {
+      save: function (key, value) {
+        document.cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value)
+          + '; max-age=' + 60 * 60 * 24 * 7 + '; path=/';   // 7 хоног
+      },
+      read: function (key) {
+        const all = this.all();
+        return key in all ? all[key] : null;
+      },
+      remove: function (key) {
+        // max-age=0 өгвөл cookie шууд устна
+        document.cookie = encodeURIComponent(key) + '=; max-age=0; path=/';
+      },
+      all: function () {
+        const result = {};
+        if (!document.cookie) return result;
+        document.cookie.split('; ').forEach(function (pair) {
+          const i = pair.indexOf('=');
+          result[decodeURIComponent(pair.slice(0, i))] = decodeURIComponent(pair.slice(i + 1));
+        });
+        return result;
+      }
+    };
+
+    // ===== localStorage, sessionStorage =====
+    // setItem(key, value) хадгална, getItem(key) уншина, removeItem(key) устгана.
+    function webStorage(storage) {
+      return {
+        save: function (key, value) { storage.setItem(key, value); },
+        read: function (key) { return storage.getItem(key); },
+        remove: function (key) { storage.removeItem(key); },
+        all: function () {
+          const result = {};
+          for (let i = 0; i < storage.length; i++) {
+            const key = storage.key(i);
+            result[key] = storage.getItem(key);
+          }
+          return result;
+        }
+      };
+    }
+
+    const stores = {
+      cookie: cookieStore,
+      local: webStorage(localStorage),
+      session: webStorage(sessionStorage)
+    };
+
+    // Карт бүрийн товчийг холбоно
+    document.querySelectorAll('[data-store]').forEach(function (card) {
+      const store = stores[card.dataset.store];
+      const keyInput = card.querySelector('[data-key]');
+      const valueInput = card.querySelector('[data-value]');
+      const output = card.querySelector('[data-output]');
+      const list = card.querySelector('[data-list]');
+
+      function show(text, type) {
+        output.className = 'small text-' + type;
+        output.innerText = text;
+      }
+
+      // "Одоо хадгалагдсан" жагсаалтыг шинэчилнэ
+      function refreshList() {
+        list.innerHTML = '';
+        const all = store.all();
+        const keys = Object.keys(all);
+        if (keys.length === 0) {
+          const li = document.createElement('li');
+          li.className = 'list-group-item px-0 text-muted';
+          li.innerText = 'Хоосон';
+          list.appendChild(li);
+          return;
+        }
+        keys.forEach(function (key) {
+          const li = document.createElement('li');
+          li.className = 'list-group-item px-0';
+          const b = document.createElement('b');
+          b.innerText = key;
+          li.appendChild(b);
+          li.appendChild(document.createTextNode(' = ' + all[key]));
+          list.appendChild(li);
+        });
+      }
+
+      card.querySelectorAll('[data-action]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const key = keyInput.value.trim();
+          if (!key) {
+            show('Түлхүүр (key) оруулна уу.', 'danger');
+            keyInput.focus();
+            return;
+          }
+          const action = button.dataset.action;
+          if (action === 'save') {
+            store.save(key, valueInput.value);
+            if (store.read(key) === null) {
+              show('Хадгалж чадсангүй.', 'danger');
+            } else {
+              show('"' + key + '" хадгалагдлаа.', 'success');
+            }
+          } else if (action === 'read') {
+            const value = store.read(key);
+            if (value === null) {
+              show('"' + key + '" олдсонгүй.', 'secondary');
+            } else {
+              valueInput.value = value;
+              show('"' + key + '" = ' + value, 'primary');
+            }
+          } else {
+            const existed = store.read(key) !== null;
+            store.remove(key);
+            show(existed ? '"' + key + '" устгагдлаа.' : '"' + key + '" олдсонгүй.', existed ? 'success' : 'secondary');
+          }
+          refreshList();
+        });
+      });
+
+      refreshList();
+    });
+
+    // file:// хуудсанд cookie ажиллахгүй тул анхааруулна
+    if (location.protocol === 'file:') {
+      document.querySelector('[data-file-warning]').classList.remove('d-none');
+    }
+  </script>
+</body>
+</html>
